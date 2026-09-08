@@ -12,19 +12,19 @@
 <body>
     <h1>掲示板アプリ</h1>
     <p>掲示板だヨ！！</p>
-    // idをつかって表示を切り替えたいがこれをCSSでするのかPHPでするのか
-    // ログイン、ユーザー追加、ユーザー編集、記事投稿画面、コメント画面の5つのリンクを表示してそのページに飛ばすかあるいは他を隠したまま飛ばす
-    // 
+    <!-- idをつかって表示を切り替えたいがこれをCSSでするのかPHPでするのか -->
+    <!-- ログイン、ユーザー追加、ユーザー編集、記事投稿画面、コメント画面の5つのリンクを表示してそのページに飛ばすかあるいは他を隠したまま飛ばす -->
+    <!-- -->
     <div class="insert" id = "logIn">
      <a>ログイン</a>
      <input class = "email"><input>
      <input class = "password"></input>
-     // inputで入力させるようにする、PHPで情報をサーバーに送る
+     <!-- inputで入力させるようにする、PHPで情報をサーバーに送る -->
     </div>
 
     <div class = "insert" id = "plusUser">
      <a>ユーザー追加</a>
-     <imput class = "email"></imput>
+     <imput type = "email" class = "email"></imput>
      <input class = "first_name"></input>
      <input class = "last_name"></input>
      <imput class = "password"></imput>
@@ -32,7 +32,7 @@
 
     <div class = "insert" id = "editUser">
      <a>ユーザー編集</a>
-     <imput class = "email"></imput>
+     <imput type = "email" class = "email"></imput>
      <input class = "first_name"></input>
      <input class = "last_name"></input>
      <imput class = "password"></imput>
@@ -51,11 +51,13 @@
     </div>
 
     <div class = "changeWindow">
-        <a id = "1">ログイン</a>
-        <a id = "2">ユーザー追加</a>
-        <a id = "3">ユーザー編集</a>
-        <a id = "4">記事投稿</a>
-        <a id = "5">コメント画面</a>
+       <ul>
+            <a id = "1">ログイン</a>
+            <a id = "2">ユーザー追加</a>
+            <a id = "3">ユーザー編集</a>
+            <a id = "4">記事投稿</a>
+            <a id = "5">コメント画面</a>
+       </ul>
     </div>
 
 
