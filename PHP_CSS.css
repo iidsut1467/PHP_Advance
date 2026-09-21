@@ -1,52 +1,54 @@
 .top {
-  display: center;
-  font-size: 50px;
-  background: linear-gradient(to right, #e60000, #f39800, #fff100, #009944, #0068b7, #1d2088, #920783);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  text-align: center;
   font-size: 300%;
   font-weight: bold;
   display: inline-block;
+  background: linear-gradient(to right, #e60000, #f39800, #fff100, #009944, #0068b7, #1d2088, #920783);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
-  
-  
+
 .insert {
   display: flex;
-  margin: 0 auto;
-  padding: 10px auto;
-  background-color: white;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  padding: 12px;
+  background-color: #ffffff;
+  border: 2px solid #333;
+  max-width: 800px;
+  border-radius: 8px;
 }
 
+.email,
+.first-name,
+.last-name,
+.password {
+  display: block;
+  width: 220px;
+  padding: 10px 12px;
+  margin: 5px auto;
+  color: #111;
+  background-color: #fff;
+  border: 3px solid #000;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
 
 .email {
-  display: center;
-  border-color: black;
-  border-line: 4px;
-  padding: 10px auto;
-  margin: 5px auto;
+  border-color: #111;
 }
 
-
-.first-name {
-  display: center;
-  font-color: black;
-  background-color: white;
-  border : 5px solid black;
+.first-name,
+.last-name,
+.password {
+  border-color: #111;
 }
-
-
-.last-name {
-  display: center;
-  font-color: black;
-  background-color: white;
-  border : 5px solid black;
-}
-
 
 .password {
-  display: center;
-  font-color: lightblue;
-  background-color: white;
-  border : 5px solid black;
+  color: #1a1a1a;
 }
   
