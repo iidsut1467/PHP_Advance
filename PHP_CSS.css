@@ -29,6 +29,24 @@
 
 .first-name {
   display: center;
-  border-color: black;
-  
+  font-color: black;
+  background-color: white;
+  border : 5px solid black;
+}
+
+
+.last-name {
+  display: center;
+  font-color: black;
+  background-color: white;
+  border : 5px solid black;
+}
+
+
+.password {
+  display: center;
+  font-color: lightblue;
+  background-color: white;
+  border : 5px solid black;
+}
   
