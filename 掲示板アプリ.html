@@ -11,8 +11,12 @@
 <body>
     
     <? php
-    require_once('PHP')
-    Page_preview();
+    require_once('PHP');
+    Page_LogIn();
+    Page_UserAdd();
+    Page_UserEdit();
+    Page_Article();
+    Page_Comment();
     Form_information();
     ?>
     <div class = "top">
@@ -36,6 +40,7 @@
      <input class = "first_name"></input>
      <input class = "last_name"></input>
      <imput class = "password"></imput>
+     <bottom type = "submit" >追加</bottom>
     </div>
 
     <div class = "insert" id = "editUser">
