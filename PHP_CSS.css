@@ -195,11 +195,6 @@ public function Page_Information {
   Page_Comment();
 }
 
-#6:active {
-  Page_LogIn();
-}
-
-
 .logOut {
   max-width: 880px;
   margin: 24px auto 40px;
