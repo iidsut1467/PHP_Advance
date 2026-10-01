@@ -18,7 +18,7 @@ body {
 }
 
 .insert {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
@@ -91,10 +91,114 @@ body {
   color: #fff;
 }
 
-#1,#2,#3,#4,#5 {
-  display:none;
-  
+public function Page_LogIn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 880px;
+  margin: 20px auto;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
+
+public function Page_UserAdd {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 880px;
+  margin: 20px auto;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+} 
+
+public function Page_UserEdit {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 880px;
+  margin: 20px auto;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+} 
+
+public function Page_Article {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 880px;
+  margin: 20px auto;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+} 
+
+public function Page_Comment {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 880px;
+  margin: 20px auto;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+} 
+
+public function Page_Information {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 880px;
+  margin: 20px auto;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+} 
+
+#1:active {
+  Page_LogIn();
+}
+
+#2:active {
+  Page_UserAdd();
+}
+
+#3:active {
+  Page_UserEdit();
+}
+
+#4:active {
+  Page_Article();
+}
+
+#5:active {
+  Page_Comment();
+}
+
+#6:active {
+  Page_LogIn();
+}
+
 
 .logOut {
   max-width: 880px;
