@@ -18,7 +18,7 @@ body {
 }
 
 .insert {
-  display: hide;
+  display: none;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
@@ -84,11 +84,6 @@ body {
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s ease;
-}
-
-.changeWindow a:hover {
-  background: #2563eb;
-  color: #fff;
 }
 
 public function Page_LogIn {
