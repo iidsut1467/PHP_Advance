@@ -18,7 +18,7 @@ body {
 }
 
 .insert {
-  display: none;
+  display: hide;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
