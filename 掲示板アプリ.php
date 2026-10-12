@@ -11,7 +11,6 @@
 <body>
     
     <? php
-    require_once('PHP');
     Page_LogIn();
     Page_UserAdd();
     Page_UserEdit();
