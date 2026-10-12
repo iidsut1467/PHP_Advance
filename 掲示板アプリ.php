@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport">
-    <link rel="stylesheet" href="PHP_Advance/PHP">
+    <link rel="stylesheet" href="PHP_Advance/PHP_CSS.css">
     <title>掲示板アプリ</title>
 </head>
 
