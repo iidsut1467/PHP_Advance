@@ -21,12 +21,49 @@
         error_log($e->getMessage());
         exit('データベースに接続できませんでした。');
     }
-    Page_LogIn();
-    Page_UserAdd();
-    Page_UserEdit();
-    Page_Article();
-    Page_Comment();
-    Form_Information();
+    session_start();
+
+    // パスワードの照合に成功した後に実行
+    session_regenerate_id(true);
+    $_SESSION['user_id'] = (int)$user['id'];
+    session_start();
+
+    if (!isset($_SESSION['user_id'])) {
+        http_response_code(403);
+        exit('記事を投稿するにはログインが必要です。');
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        exit('許可されていないアクセスです。');
+    }
+
+    require_once __DIR__ . '/config/database.php';
+
+    $article = trim($_POST['article'] ?? '');
+
+    if ($article === '') {
+        exit('記事本文を入力してください。');
+    }
+
+    $userId = (int)$_SESSION['user_id'];
+
+    $sql = 'INSERT INTO posts (article, user_id)
+        VALUES (:article, :user_id)';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':article' => $article,
+        ':user_id' => $userId,
+    ]);
+
+    header('Location: index.php');
+        Page_LogIn();
+        Page_UserAdd();
+        Page_UserEdit();
+        Page_Article();
+        Page_Comment();
+        Form_Information();
     ?>
     
     <div class = "top">
