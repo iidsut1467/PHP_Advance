@@ -32,14 +32,16 @@
         http_response_code(403);
         exit('記事を投稿するにはログインが必要です。');
     }
-
+    // 未ログインならログインしてねと促す
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
         exit('許可されていないアクセスです。');
     }
+    // POST以外の形式だとアクセスを拒否する
+
 
     require_once __DIR__ . '/config/database.php';
-
+    
     $article = trim($_POST['article'] ?? '');
 
     if ($article === '') {
@@ -47,7 +49,7 @@
     }
 
     $userId = (int)$_SESSION['user_id'];
-
+    // user_idはSESSIONで受け取る
     $sql = 'INSERT INTO posts (article, user_id)
         VALUES (:article, :user_id)';
 
@@ -56,14 +58,8 @@
         ':article' => $article,
         ':user_id' => $userId,
     ]);
-
+    // SQLはPrepared Statementで受け取るようにする
     header('Location: index.php');
-        Page_LogIn();
-        Page_UserAdd();
-        Page_UserEdit();
-        Page_Article();
-        Page_Comment();
-        Form_Information();
     ?>
     
     <div class = "top">
