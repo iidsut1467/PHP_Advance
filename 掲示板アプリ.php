@@ -11,6 +11,16 @@
 <body>
     
     <? php
+    try {
+        $pdo = new PDO($BBS, $username, $password, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCE_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ]);
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        exit('データベースに接続できませんでした。');
+    }
     Page_LogIn();
     Page_UserAdd();
     Page_UserEdit();
