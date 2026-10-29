@@ -11,35 +11,32 @@
 <body>
     
     <? php
+    $host = 'localhost';
+    $dbname = 'BBS';
+    $username = 'root';
+    $password = '';
+
     try {
-        $pdo = new PDO($BBS, $username, $password, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCE_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false,
-        ]);
+        $pdo = new PDO(
+            "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+            $username,
+            $password, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+            ]
+        );
     } catch (PDOException $e) {
         error_log($e->getMessage());
         exit('データベースに接続できませんでした。');
     }
+    
     session_start();
+    require_once __DIR__ . '/config/database.php';
 
-    $sql = 'INSERT INTO users
-            (first_name, last_name, email, password)
-            VALUES (:first_name, :last_name, :email, :password)';
 
-    $stmt = $pdo->prepare($sql);   
-
-    $stmt->execute([
-        ':first_name' => $firstName,
-        ':last_name'  => $lastName,
-        ':email'      => $email,
-        ':password'   => hash('sha256', $password),
-    ]);
-    //　ユーザー登録時のSQL
-    // パスワードの照合に成功した後に実行
-    session_regenerate_id(true);
-    $_SESSION['user_id'] = (int)$user['id'];
-    session_start();
+    // ログインしているか確認
+    $isLoggedIn = isset($_SESSION['user_id']);
 
     if (!isset($_SESSION['user_id'])) {
         http_response_code(403);
@@ -61,18 +58,36 @@
         exit('記事本文を入力してください。');
     }
 
+
+ $sql = 'INSERT INTO users
+            (first_name, last_name, email, password)
+            VALUES (:first_name, :last_name, :email, :password)';
+
+    $stmt = $pdo->prepare($sql);   
+
+    $stmt->execute([
+        ':first_name' => $firstName,
+        ':last_name'  => $lastName,
+        ':email'      => $email,
+        ':password'   => hash('sha256', $password),
+    ]);
+
+    // SQLはPrepared Statementで受け取るようにする
+    header('Location: index.php');
+
     $userId = (int)$_SESSION['user_id'];
     // user_idはSESSIONで受け取る
     $sql = 'INSERT INTO posts (article, user_id)
-        VALUES (:article, :user_id)';
+            VALUES (:article, :user_id)';
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':article' => $article,
         ':user_id' => $userId,
     ]);
-    // SQLはPrepared Statementで受け取るようにする
+
     header('Location: index.php');
+    exit;
     ?>
     
     <div class = "top">
@@ -136,3 +151,11 @@
 
 </body>
 </html>
+
+
+<?php
+    //　ユーザー登録時のSQL
+    // パスワードの照合に成功した後に実行
+    session_regenerate_id(true);
+    $_SESSION['user_id'] = (int)$user['id'];
+?>
