@@ -23,6 +23,19 @@
     }
     session_start();
 
+    $sql = 'INSERT INTO users
+            (first_name, last_name, email, password)
+            VALUES (:first_name, :last_name, :email, :password)';
+
+    $stmt = $pdo->prepare($sql);   
+
+    $stmt->execute([
+        ':first_name' => $firstName,
+        ':last_name'  => $lastName,
+        ':email'      => $email,
+        ':password'   => hash('sha256', $password),
+    ]);
+    //　ユーザー登録時のSQL
     // パスワードの照合に成功した後に実行
     session_regenerate_id(true);
     $_SESSION['user_id'] = (int)$user['id'];
@@ -96,8 +109,11 @@
 
     <div class = "insert" id = "contents">
      <a>記事投稿画面</a>
-     <input class = ""></input>
-     <imput class = "password"></imput>
+        <h1>⬇️ここにタイトルを書いてね⬇️</h1>
+        <form action="post_create.php" method="post">
+            <textarea name="article" required></textarea>
+            <button type="submit">投稿する</button>
+        </form>
     </div>
     
     <div class = "insert" id = "comments">
