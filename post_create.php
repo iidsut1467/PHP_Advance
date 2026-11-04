@@ -2,8 +2,6 @@
 
 session_start();
 
-require_once __DIR__ . '/config/database.php';
-
 // POST以外のアクセスを拒否
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -38,6 +36,8 @@ $stmt->execute([
     ':article' => $article,
     ':user_id' => $userId,
 ]);
+
+require_once __DIR__ . '/config/database.php';
 
 header('Location: index.php');
 exit;
