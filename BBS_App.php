@@ -38,30 +38,19 @@
     // ログインしているか確認
     $isLoggedIn = isset($_SESSION['user_id']);
 
-    if (!isset($_SESSION['user_id'])) {
-        http_response_code(403);
-        exit('記事を投稿するにはログインが必要です。');
-    }
-    // 未ログインならログインしてねと促す
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405);
-        exit('許可されていないアクセスです。');
-    }
-    // POST以外の形式だとアクセスを拒否する
 
+require_once __DIR__ . '/config/database.php';
 
-    require_once __DIR__ . '/config/database.php';
-    
     $article = trim($_POST['article'] ?? '');
 
     if ($article === '') {
         exit('記事本文を入力してください。');
     }
 
-
- $sql = 'INSERT INTO users
-            (first_name, last_name, email, password)
-            VALUES (:first_name, :last_name, :email, :password)';
+    $firstName = trim($_POST['first_name'] ?? '');
+    $lastName  = trim($_POST['last_name'] ?? '');
+    $email     = trim($_POST['email'] ?? '');
+    $password  = $_POST['password'] ?? '';
 
     $stmt = $pdo->prepare($sql);   
 
