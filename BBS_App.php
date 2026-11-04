@@ -135,7 +135,13 @@ require_once __DIR__ . '/config/database.php';
             <button id = "5">コメント画面</button>
        </ul>
     </div>
-    <div class = "logOut"><h1>ログアウト</h1></div>
+    <div class = "logOut">
+        <?php if ($isLoggedIn): ?>
+            <form action="logout.php" method="POST">
+                <button type="submit">ログアウト</button>
+            </form>
+        <?php endif; ?>
+    </div>
 
 
 </body>
