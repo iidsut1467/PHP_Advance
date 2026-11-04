@@ -1,5 +1,8 @@
 <?php
+
 session_start();
+
+require_once __DIR__ . '/config/database.php';
 
 // POST以外のアクセスを拒否
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
