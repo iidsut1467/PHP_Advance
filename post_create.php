@@ -27,7 +27,7 @@ if ($article === '') {
 // ログイン中のユーザーIDを取得
 $userId = (int)$_SESSION['user_id'];
 
-// 記事をデータベースに登録
+// 記事をデータベースに登録-SQL-
 $sql = 'INSERT INTO posts (article, user_id)
         VALUES (:article, :user_id)';
 
@@ -37,6 +37,7 @@ $stmt->execute([
     ':user_id' => $userId,
 ]);
 
+// データベースに接続する
 require_once __DIR__ . '/config/database.php';
 
 header('Location: index.php');
