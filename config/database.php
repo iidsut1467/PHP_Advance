@@ -19,7 +19,4 @@ try {
     exit('データベース接続に失敗しました。');
 }
 
-// データベースに接続
-require_once __DIR__ . '/config/database.php';
-
 ?>

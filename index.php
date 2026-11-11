@@ -1,156 +1,114 @@
-<DOCTYPE html!>
+<?php
+session_start();
+require_once __DIR__ . '/config/database.php';
+
+// ログインしているか確認
+$isLoggedIn = isset($_SESSION['user_id']);
+
+// 投稿一覧を新しい順に取得（投稿者名も一緒に取得する）
+$sql = 'SELECT posts.id, posts.article, posts.created_at,
+               users.first_name, users.last_name
+        FROM posts
+        JOIN users ON posts.user_id = users.id
+        ORDER BY posts.created_at DESC';
+$posts = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+// 表示用のエスケープ関数（XSS対策）
+function h($str) {
+    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+?>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport">
-    <link rel="stylesheet" href="PHP_Advance-main/PHP_CSS.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="PHP_CSS.css">
     <title>掲示板アプリ</title>
 </head>
-
-    
 <body>
-    
-    <? php
-    $host = 'localhost';
-    $dbname = 'BBS';
-    $username = 'root';
-    $password = '';
-
-    try {
-        $pdo = new PDO(
-            "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
-            $username,
-            $password, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
-            ]
-        );
-    } catch (PDOException $e) {
-        error_log($e->getMessage());
-        exit('データベースに接続できませんでした。');
-    }
-    
-    session_start();
-    require_once __DIR__ . '/config/database.php';
-
-
-    // ログインしているか確認
-    $isLoggedIn = isset($_SESSION['user_id']);
-
-
-require_once __DIR__ . '/config/database.php';
-
-    $article = trim($_POST['article'] ?? '');
-
-    if ($article === '') {
-        exit('記事本文を入力してください。');
-    }
-
-    $firstName = trim($_POST['first_name'] ?? '');
-    $lastName  = trim($_POST['last_name'] ?? '');
-    $email     = trim($_POST['email'] ?? '');
-    $password  = $_POST['password'] ?? '';
-
-    $stmt = $pdo->prepare($sql);   
-
-    $stmt->execute([
-        ':first_name' => $firstName,
-        ':last_name'  => $lastName,
-        ':email'      => $email,
-        ':password'   => hash('sha256', $password),
-    ]);
-
-    // SQLはPrepared Statementで受け取るようにする
-    header('Location: index.php');
-
-    $userId = (int)$_SESSION['user_id'];
-    // user_idはSESSIONで受け取る
-    $sql = 'INSERT INTO posts (article, user_id)
-            VALUES (:article, :user_id)';
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':article' => $article,
-        ':user_id' => $userId,
-    ]);
-
-    header('Location: index.php');
-    exit;
-    ?>
-    
-    <div class = "top">
-    <h1>掲示板アプリ</h1>
-    <p>掲示板だヨ！！</p>
-    </div>
-    <!-- idをつかって表示を切り替えたいがこれをCSSでするのかPHPでするのか -->
-    <!-- ログイン、ユーザー追加、ユーザー編集、記事投稿画面、コメント画面の5つのリンクを表示してそのページに飛ばすかあるいは他を隠したまま飛ばす -->
-    <!-- 
-    -->
-    <div class="insert" id = "logIn">
-     <a>ログイン</a>
-     <input type = "email" class = "email"><input>
-     <input class = "password"></input>
-     <!-- inputで入力させるようにする、PHPで情報をサーバーに送る -->
+    <div class="top">
+        <h1>掲示板アプリ</h1>
+        <p>掲示板だヨ！！</p>
     </div>
 
-    <div class = "insert" id = "plusUser">
-     <a>ユーザー追加</a>
-     <imput type = "email" class = "email"></imput>
-     <input class = "first_name"></input>
-     <input class = "last_name"></input>
-     <imput class = "password"></imput>
-     <buttom type = "submit" >送信</buttom>
-    </div>
-
-    <div class = "insert" id = "editUser">
-     <a>ユーザー編集</a>
-     <imput type = "email" class = "email"></imput>
-     <input class = "first_name"></input>
-     <input class = "last_name"></input>
-     <imput class = "password"></imput>
-    </div>
-
-    <div class = "insert" id = "contents">
-     <a>記事投稿画面</a>
-        <h1>⬇️ここにタイトルを書いてね⬇️</h1>
-        <form action="post_create.php" method="post">
-            <textarea name="article" required></textarea>
-            <button type="submit">投稿する</button>
-        </form>
-    </div>
-    
-    <div class = "insert" id = "comments">
-     <a>コメント画面</a>
-     <input class = "article"></input>
-     <imput class = "password"></imput>
-    </div>
-
-    <div class = "changeWindow" onclick= "clickcChangeWindow()">
-       <ul>
-            <button id = "1">ログイン</button>
-            <button id = "2">ユーザー追加</button>
-            <button id = "3">ユーザー編集</button>
-            <button id = "4">記事投稿</button>
-            <button id = "5">コメント画面</button>
-       </ul>
-    </div>
-    <div class = "logOut">
-        <?php if ($isLoggedIn): ?>
-            <form action="logout.php" method="POST">
-                <button type="submit">ログアウト</button>
-            </form>
+    <!-- 画面切り替えボタン：ログイン状態によって出すボタンをPHPで変える -->
+    <div class="changeWindow">
+        <?php if (!$isLoggedIn): ?>
+            <button type="button" data-target="logIn">ログイン</button>
+            <button type="button" data-target="plusUser">ユーザー追加</button>
+        <?php else: ?>
+            <button type="button" data-target="contents">記事投稿</button>
         <?php endif; ?>
     </div>
 
+    <?php if (!$isLoggedIn): ?>
+        <!-- ログイン -->
+        <div class="insert" id="logIn">
+            <h2>ログイン</h2>
+            <form action="login.php" method="post">
+                <input type="email" name="email" class="email" placeholder="メールアドレス" required>
+                <input type="password" name="password" class="password" placeholder="パスワード" required>
+                <button type="submit">ログイン</button>
+            </form>
+        </div>
 
+        <!-- ユーザー追加 -->
+        <div class="insert" id="plusUser">
+            <h2>ユーザー追加</h2>
+            <form action="register.php" method="post">
+                <input type="email" name="email" class="email" placeholder="メールアドレス" required>
+                <input type="text" name="first_name" class="first-name" placeholder="名" required>
+                <input type="text" name="last_name" class="last-name" placeholder="姓" required>
+                <input type="password" name="password" class="password" placeholder="パスワード" required>
+                <button type="submit">登録</button>
+            </form>
+        </div>
+    <?php else: ?>
+        <!-- 記事投稿 -->
+        <div class="insert" id="contents">
+            <h2>記事投稿</h2>
+            <form action="post_create.php" method="post">
+                <textarea name="article" placeholder="ここに記事を書いてね" required></textarea>
+                <button type="submit">投稿する</button>
+            </form>
+        </div>
+
+        <!-- ログアウト -->
+        <div class="logOut">
+            <form action="logout.php" method="post">
+                <button type="submit">ログアウト</button>
+            </form>
+        </div>
+    <?php endif; ?>
+
+    <!-- 投稿一覧 -->
+    <div class="posts">
+        <?php if (count($posts) === 0): ?>
+            <p>まだ投稿はありません。</p>
+        <?php endif; ?>
+        <?php foreach ($posts as $post): ?>
+            <div class="post">
+                <p><?= nl2br(h($post['article'])) ?></p>
+                <small>
+                    <?= h($post['last_name'] . ' ' . $post['first_name']) ?>
+                    ／ <?= h($post['created_at']) ?>
+                </small>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <script>
+    // ボタンを押したら、対応するフォームだけを表示する（is-activeクラスの付け外し）
+    document.querySelectorAll('.changeWindow button').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.insert, .changeWindow button').forEach(function (el) {
+                el.classList.remove('is-active');
+            });
+            btn.classList.add('is-active');
+            document.getElementById(btn.dataset.target).classList.add('is-active');
+        });
+    });
+    </script>
 </body>
 </html>
-
-
-<?php
-    //　ユーザー登録時のSQL
-    // パスワードの照合に成功した後に実行
-    session_regenerate_id(true);
-    $_SESSION['user_id'] = (int)$user['id'];
-?>

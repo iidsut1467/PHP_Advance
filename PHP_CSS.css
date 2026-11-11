@@ -86,63 +86,86 @@ body {
   transition: all 0.2s ease;
 }
 
-public function Page_LogIn {
+.changeWindow {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.changeWindow button {
+  border: none;
+  cursor: pointer;
+}
+
+.changeWindow button:hover,
+.changeWindow button.is-active {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* ボタンで選ばれたフォームだけ表示する（JavaScriptでis-activeを付け外し） */
+.insert.is-active {
   display: flex;
 }
 
-public function Page_UserAdd {
-  display: flex;
+.insert h2 {
+  width: 100%;
+  margin: 0;
+  text-align: center;
 }
 
-public function Page_UserEdit {
+.insert form {
   display: flex;
-} 
-
-public function Page_Article {
-  display: flex;
-} 
-
-public function Page_Comment {
-  display: flex;
-} 
-
-public function Page_Information {
-  display: flex;
-} 
-
-#1:active {
-  Page_LogIn();
-  if (#1: inactive{
-    display: none;
-  })
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
 }
 
-#2:active {
-  Page_UserAdd();
-  if ( #2:inactive {
-    display: none;
-  })
+.insert textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px 14px;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
-#3:active {
-  Page_UserEdit();
-  if ( #3: inactive {
-    display: none;
-  })
+.insert button[type="submit"],
+.logOut button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-#4:active {
-  Page_Article();
-  if ( #4: inactive {
-    display: none;
-  })
+/* 投稿一覧 */
+.posts {
+  max-width: 880px;
+  margin: 24px auto;
+  padding: 0 16px;
 }
 
-#5:active {
-  Page_Comment();
-  if ( #5: inactive {
-    display: none;
-  })
+.post {
+  margin-bottom: 16px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 12px;
+  word-break: break-word;
+}
+
+.post p {
+  margin: 0 0 8px;
+}
+
+.post small {
+  color: #64748b;
 }
 
 .logOut {

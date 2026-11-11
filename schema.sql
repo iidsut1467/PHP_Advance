@@ -1,0 +1,20 @@
+-- phpMyAdmin の「SQL」タブに貼り付けて実行してください
+CREATE DATABASE IF NOT EXISTS BBS CHARACTER SET utf8mb4;
+USE BBS;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name  VARCHAR(50) NOT NULL,
+    email      VARCHAR(255) NOT NULL UNIQUE,
+    password   CHAR(64) NOT NULL,          -- sha256は16進数64文字
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    article TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

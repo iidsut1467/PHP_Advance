@@ -37,9 +37,6 @@ $stmt->execute([
     ':user_id' => $userId,
 ]);
 
-// データベースに接続する
-require_once __DIR__ . '/config/database.php';
-
 header('Location: index.php');
 exit;
 
