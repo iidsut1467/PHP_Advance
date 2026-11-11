@@ -13,6 +13,17 @@ $sql = 'SELECT posts.id, posts.article, posts.created_at,
         ORDER BY posts.created_at DESC';
 $posts = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
+// レスを古い順にまとめて取得し、投稿IDごとに分けておく
+$sql = 'SELECT comments.post_id, comments.comment, comments.created_at,
+               users.first_name, users.last_name
+        FROM comments
+        JOIN users ON comments.user_id = users.id
+        ORDER BY comments.created_at ASC, comments.id ASC';
+$commentsByPost = [];
+foreach ($pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC) as $row) {
+    $commentsByPost[$row['post_id']][] = $row;
+}
+
 // 表示用のエスケープ関数（XSS対策）
 function h($str) {
     return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
@@ -88,12 +99,38 @@ function h($str) {
             <p>まだ投稿はありません。</p>
         <?php endif; ?>
         <?php foreach ($posts as $post): ?>
-            <div class="post">
+            <div class="post" id="post-<?= (int)$post['id'] ?>">
                 <p><?= nl2br(h($post['article'])) ?></p>
                 <small>
                     <?= h($post['last_name'] . ' ' . $post['first_name']) ?>
                     ／ <?= h($post['created_at']) ?>
                 </small>
+
+                <!-- レス一覧 -->
+                <?php $comments = $commentsByPost[$post['id']] ?? []; ?>
+                <?php if (count($comments) > 0): ?>
+                    <div class="comments">
+                        <?php foreach ($comments as $i => $comment): ?>
+                            <div class="comment">
+                                <span class="comment-no"><?= $i + 1 ?>.</span>
+                                <?= nl2br(h($comment['comment'])) ?>
+                                <small>
+                                    <?= h($comment['last_name'] . ' ' . $comment['first_name']) ?>
+                                    ／ <?= h($comment['created_at']) ?>
+                                </small>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- レス投稿フォーム（ログイン中のみ） -->
+                <?php if ($isLoggedIn): ?>
+                    <form class="comment-form" action="comment_create.php" method="post">
+                        <input type="hidden" name="post_id" value="<?= (int)$post['id'] ?>">
+                        <textarea name="comment" placeholder="レスを書く" required></textarea>
+                        <button type="submit">レスする</button>
+                    </form>
+                <?php endif; ?>
             </div>
         <?php endforeach; ?>
     </div>
